@@ -25,11 +25,11 @@ MyZRMaps
 
 ## Build 
 
-1. Install node
-2. navigate to the folder in your favourite console
-3. `npm install` 
-4. Run it with `node index.js` to test if everything works.
+1. Install nodejs (from https://nodejs.org/en/ - version 10.13 LTS was used during development)
+2. Navigate to the folder in your favourite console
+3. Run `npm install` 
+4. Run the application with `node index.js` to test if everything works.
 
 Then to pack it into a exe file:
-1. Install https://www.npmjs.com/package/pkg (with `npm install -g pkg`)
+1. Install pkg (`npm install -g pkg`, https://www.npmjs.com/package/pkg)
 2. Run `pkg index.js`
