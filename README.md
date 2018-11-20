@@ -1,5 +1,5 @@
 # zr-packer
-An automated Age of Empires 2 Zipped Random Map packer. This tool automatically detects changes in your RMS, SCX or SLP files and packs them into a ZR@.rms file.
+An automated Age of Empires 2 Zipped Random Map packer. This tool automatically detects changes in your RMS, SCX or SLP files and packs them into a ZR@ .rms file.
 ## Download
 https://github.com/abductedPlatypus/zr-packer/releases/download/0.0.1/zr-packer.zip
 ## Usage
