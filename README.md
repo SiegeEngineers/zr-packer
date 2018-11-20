@@ -9,7 +9,7 @@ An automated Age of Empires 2 Zipped Random Map packer. This tool automatically 
 4. Run zr-packer.exe
 5. Happy editing and watch your ZR@maps appear in the Script.RM folder automatically.
 
-* You can also make one or several folders to organize your ZR maps a bit better, and place your folders there: 
+*You can also make one or several folders to organize your ZR maps a bit better, and place your folders there: 
 ```
 MyZRMaps
   MyMap1
