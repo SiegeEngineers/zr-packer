@@ -33,3 +33,6 @@ MyZRMaps
 Then to pack it into a exe file:
 1. Install pkg (`npm install -g pkg`, https://www.npmjs.com/package/pkg)
 2. Run `pkg index.js`
+
+## Authors
+@abductedPlatypus - Original Author
