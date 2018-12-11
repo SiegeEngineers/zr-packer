@@ -35,4 +35,4 @@ Then to pack it into a exe file:
 2. Run `pkg index.js`
 
 ## Authors
-@abductedPlatypus - Original Author
+[abductedPlatypus](https://github.com/abductedolatypus) - Original Author
