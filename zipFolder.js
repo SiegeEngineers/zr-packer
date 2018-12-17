@@ -3,29 +3,22 @@
 'use strict';
 
 const fs = require('fs');
+const path = require("path");
 const JSZip = require("jszip");
 
 const out = {
-    zipFolderAsync : function (path, zip, zipLocation = "" ) 
+    zipFolderAsync : function (folderPath, zip, zipLocation = "" ) 
     {
-        console.log(path);
-        if(path && !path.endsWith("/") && !path.endsWith("\\"))
-        {
-            path += "\\";
-        }
-        if(zipLocation && !zipLocation.endsWith("/") && !zipLocation.endsWith("\\"))
-        {
-            zipLocation += "\\";
-        }
+        console.log(folderPath);
         return new Promise((resolve, reject) => {
-            fs.readdir(path, (error, filenames) => {
+            fs.readdir(folderPath, (error, filenames) => {
                 if(error){ return reject(error); }
                 let promises = [];
                 for(let i = 0; i < filenames.length; i++) {
-                    if (fs.statSync(path + filenames[i]).isDirectory()) { // TODO: use async instead?
-                        promises.push(this.zipFolderAsync(path + filenames[i], zip, zipLocation+filenames[i]));
+                    if (fs.statSync(path.join(folderPath, filenames[i])).isDirectory()) { // TODO: use async instead?
+                        promises.push(this.zipFolderAsync(path.join(folderPath, filenames[i]), zip, path.join(zipLocation, filenames[i])));
                     } else {
-                        promises.push(out.zipFileAsync(path, filenames[i], zip, zipLocation));
+                        promises.push(out.zipFileAsync(folderPath, filenames[i], zip, zipLocation));
                     }
                 }
                 Promise.all(promises).then((value) => {
@@ -35,20 +28,12 @@ const out = {
         })
     },
 
-    zipFileAsync : function (path, filename, zip, zipLocation = "") 
+    zipFileAsync : function (folderPath, filename, zip, zipLocation = "") 
     {
-        if(path && !path.endsWith("/") && !path.endsWith("\\"))
-        {
-            path += "\\";
-        }
-        if(zipLocation && !zipLocation.endsWith("/") && !zipLocation.endsWith("\\"))
-        {
-            zipLocation += "\\";
-        }
         return new Promise((resolve, reject) => {
-            fs.readFile(path+filename, (error, content) => {
+            fs.readFile(path.join(folderPath, filename), (error, content) => {
                 if (error){ return reject(error); }
-                resolve(zip.file(zipLocation+filename, content));
+                resolve(zip.file(path.join(zipLocation, filename), content));
             });
         });
     }

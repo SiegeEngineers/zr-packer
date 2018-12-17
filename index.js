@@ -3,7 +3,9 @@
 'use strict';
 
 const fs = require("fs");
+const path = require("path");
 const JSZip = require("jszip");
+const recursiveWatch = require("recursive-watch");
 
 // Some functions to iteratively and asynchrously zip a folder
 const zf = require("./zipFolder.js");
@@ -12,34 +14,21 @@ const zf = require("./zipFolder.js");
 const updates = []; 
 const updateInterval = 1000; // time between updates in ms
 
-const checkAndAddFolder = function (path) 
+const checkAndAddFolder = function (sourceFilePath) 
 {
-    if((path.endsWith(".rms") || 
-    path.endsWith(".scx") || 
-    path.endsWith(".slp")) 
+    const ext = path.extname(sourceFilePath);
+    if((ext === ".rms" || 
+    ext === ".scx" || 
+    ext === ".slp") 
     && 
-    (path.indexOf("/") >= -1 || 
-    path.contains("\\") >= -1))
+    (sourceFilePath.includes(path.sep)))
     {
-        // extract some folder and file names
-        let index = path.lastIndexOf("\\");
-        if(index < 0){
-            index = path.lastIndexOf("/");
-        }
-
-        let folderPath = path.substring(0, index);
+        let folderPath = path.dirname(sourceFilePath);
         if(!folderPath){
             return; // we don't bother about root files
         }
 
-        let folderName = folderPath;
-        index = folderPath.lastIndexOf("\\");
-        if(index < 0){
-            index = folderPath.lastIndexOf("/");
-        }
-        if(index > 0){
-            folderName = folderPath.substring(index+1, folderName.length);
-        }
+        let folderName = path.basename(folderPath);
 
         // decide RMS name
         let zrName = "ZR@"+folderName+".rms";
@@ -58,7 +47,7 @@ const checkAndAddFolder = function (path)
         }
         // save for updating the ZR in intervals
         updates[zrName] = {
-            sourceCTime: fs.statSync(path).ctimeMs, 
+            sourceCTime: fs.statSync(sourceFilePath).ctimeMs, 
             zrCTime:zrCTime, 
             filenames: filenames, 
             folderPath: folderPath, 
@@ -119,7 +108,8 @@ console.log("Listening for changes...");
 
 // This function might get called several times per change
 // so we cache the results instead and update on a timer
-fs.watch("./", {recursive: true}, (eventType, path) => {
-    checkAndAddFolder(path);
+recursiveWatch("./", (changedPath) => {
+    console.log('changed', changedPath);
+    checkAndAddFolder(changedPath);
 });
 ///////////////////////////////////////////////////////////
